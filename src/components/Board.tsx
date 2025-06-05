@@ -1,8 +1,9 @@
-import { use, useEffect, useState } from "react"
-import CardZone from "./CardZone";
-import Scoreboard from "./Scoreboard";
+import { useEffect, useState } from "react"
+import { CardZone } from "./CardZone";
+import { Scoreboard } from "./Scoreboard";
 
-interface Pokemon {
+
+export interface Pokemon {
     name: string,
     id: number,
     art: string,
@@ -17,7 +18,7 @@ export default function Board() {
 
 
     //Capitalize first letter of pokemon's name
-    function capitalizeFirstLetter(string) {
+    function capitalizeFirstLetter(string: string): string {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
     
@@ -69,12 +70,21 @@ export default function Board() {
 
 
     return (
-        <>
+        <div className="board">
+            <h1 className='title'>Pokemon Memory Card Game</h1>
             <Scoreboard
             score={score}
             record={record}
             ></Scoreboard>
-            <CardZone></CardZone>
-        </>
+            {pokeList && pokeList.length > 0 
+            ? (
+                <CardZone
+                updateScore={updateScore}
+                setGameStatus={setGameStatus}
+                pokeList={pokeList}
+                ></CardZone>)
+            : (<p>No list generated</p>)
+            }
+        </div>
     )
 }
