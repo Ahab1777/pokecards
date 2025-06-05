@@ -14,7 +14,7 @@ export default function Board() {
     const [score, setScore] = useState<number>(0);
     const [record, setRecord] = useState<number>(0);
     const [gameStatus, setGameStatus] = useState< 'lose' | 'win' | 'ongoing'>('ongoing'); 
-    const [pokeList, setPokemonList] = useState< Pokemon[] | null >(null);
+    const [pokeList, setPokeList] = useState< Pokemon[] | null >(null);
 
 
     //Capitalize first letter of pokemon's name
@@ -46,7 +46,7 @@ export default function Board() {
                     isSelected: false,
                 })
             );
-            setPokemonList(filteredList);
+            setPokeList(filteredList);
         };
         fetchPokemon();
     }, [])
@@ -71,7 +71,7 @@ export default function Board() {
 
     return (
         <div className="board">
-            <h1 className='title'>Pokemon Memory Card Game</h1>
+            <h1 className='title'></h1>
             <Scoreboard
             score={score}
             record={record}
@@ -82,6 +82,7 @@ export default function Board() {
                 updateScore={updateScore}
                 setGameStatus={setGameStatus}
                 pokeList={pokeList}
+                setPokeList={setPokeList}
                 ></CardZone>)
             : (<p>No list generated</p>)
             }
