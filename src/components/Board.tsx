@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react"
+import { use, useEffect, useState } from "react"
 import CardZone from "./CardZone";
 import Scoreboard from "./Scoreboard";
 
 interface Pokemon {
-                    name: string,
-                    id: number,
-                    art: url,
-                    isSelected: boolean,
-                }
+    name: string,
+    id: number,
+    art: string,
+    isSelected: boolean,
+}
 
 export default function Board() {
     const [score, setScore] = useState<number>(0);
-    const [gameStatus, setGameStatus] = useState< 'lose' | 'win' | 'ongoing'>('ongoing') 
+    const [record, setRecord] = useState<number>(0);
+    const [gameStatus, setGameStatus] = useState< 'lose' | 'win' | 'ongoing'>('ongoing'); 
+    const [pokeList, setPokemonList] = useState< Pokemon[] | null >(null);
 
 
     //Capitalize first letter of pokemon's name
@@ -48,11 +50,30 @@ export default function Board() {
         fetchPokemon();
     }, [])
 
+    function updateScore() {
+        if (gameStatus !== 'ongoing') {
+            return
+        }
+        let currentScore: number = 0;
+        pokeList?.forEach(pokemon => {//Check number of selected pokemons so far
+            if (pokemon.isSelected) {
+                currentScore++
+            }
+        })
+        setScore(currentScore);
+        if (currentScore > record) {//check if this is a new record
+            setRecord(currentScore)
+        }
+    }
+
 
 
     return (
         <>
-            <Scoreboard></Scoreboard>
+            <Scoreboard
+            score={score}
+            record={record}
+            ></Scoreboard>
             <CardZone></CardZone>
         </>
     )
