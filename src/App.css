@@ -2,14 +2,47 @@
   box-sizing: border-box;
 }
 
+/* create color variables for yellow blue and red */
+:root {
+  --yellow: #FFCB05;
+  --blue: #2a75bb;
+  --red: #CC0000;
+  --black: #3d3d3d;
+  --white: #ffffff;
+}
+
+html {
+  background: linear-gradient(45deg, var(--red) 45%, var(--blue) 55%);
+}
+
+/* Fonts */
+
+@font-face {
+  font-family: 'Pokemon Hollow';
+  src: url('./assets/Pokemon_Hollow.ttf') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 /* Board */
 
 .board{
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   margin: 3rem 1rem;
   max-width: 750px;
+}
+
+.board > h1{
+  font-family: 'Pokemon Hollow', Arial, sans-serif;
+  color: var(--yellow);
+  text-shadow: 2px 2px var(--black);
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: bolder;
 }
 
 /* Score Board */
@@ -36,6 +69,8 @@
   border: 3px solid black;
   border-radius: 5px;
   padding: 1rem 0;
+  will-change: transform;
+  background-color: var(--yellow);
 }
 
 .card img {
@@ -45,6 +80,7 @@
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: contain;
+  transition: opacity 0.3s ease;
 
 }
 
@@ -52,6 +88,42 @@
   text-align: center;
   font-size: 1.2rem;
   margin: 0.5rem 0;
+}
+
+.card-win {
+  border: 3px solid green;
+}
+
+.card-lose {
+  border: 3px solid red;
+}
+
+.card-lose > img {
+  opacity: 0.5;
+}
+
+/*hovering over not card lose nor card win */
+.card:hover:not(.card-lose):not(.card-win) {
+  animation-duration: 0.3s;
+  animation-name: hovering;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+
+
+@keyframes hovering{
+    0% {
+        transform: scale(1.0) rotate(0.5deg);
+    }
+
+    50% {
+        transform: scale(1.03) rotate(0.5deg);
+    }
+
+    100% {
+        transform: scale(1.09) rotate(-0.5deg);
+    }
 }
 
 

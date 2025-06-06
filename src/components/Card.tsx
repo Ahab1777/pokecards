@@ -1,17 +1,30 @@
 import type { Pokemon } from "./Board";
 
 type CardProps = {
-    pokemon: Pokemon
-}
+    pokemon: Pokemon;
+    onClick?: (pokemon: Pokemon) => void;
+    gameStatus?: 'ongoing' | 'win' | 'lose';
+};
 
-export const Card: React.FC<CardProps> = ({pokemon}) => {
+export const Card: React.FC<CardProps> = ({ pokemon, onClick, gameStatus }) => {
+    const cardClass = `card ${gameStatus === 'win' ? 'card-win' : ''} ${gameStatus === 'lose' ? 'card-lose' : ''}`
+
+    function handleClick() {
+        if (gameStatus !== 'ongoing') {
+            return;
+        }
+        onClick?.(pokemon);
+    }
 
     return (
-        <div className="card"> 
+        <div 
+            className={cardClass}
+            onClick={handleClick}
+        >
             <img src={pokemon.art} alt={pokemon.name} className="pokemon-img" />
             <h3 className="pokemon-name">
-            {pokemon.name}
+                {pokemon.name}
             </h3>
         </div>
-    )
+    );
 }

@@ -6,10 +6,12 @@ type CardZoneProps = {
     updateScore: () => void
     setGameStatus: (status: 'ongoing' | 'win' | 'lose') => void
     pokeList: Pokemon[]
-    setPokeList: (prevPokeList: Pokemon[]) => void
+    setPokeList: React.Dispatch<React.SetStateAction<Pokemon[]>>
+    checkWinCon: () => void
+    gameStatus: 'ongoing' | 'win' | 'lose'
 }
 
-export const CardZone: React.FC<CardZoneProps> = ({updateScore, setGameStatus, pokeList, setPokeList}) => {
+export const CardZone: React.FC<CardZoneProps> = ({updateScore, gameStatus, setGameStatus, pokeList, setPokeList, checkWinCon}) => {
     const [cards, setCards] = useState<Pokemon[]>([]);
 
     // Shuffle only when pokeList changes
@@ -25,14 +27,29 @@ export const CardZone: React.FC<CardZoneProps> = ({updateScore, setGameStatus, p
     }, [pokeList]);    
 
     //Handle card click
-    const handleClick: () => void = () => {
+    const handleClick = (pokemon: Pokemon) => {
         //check if already selected
-            //Endgame if already selected
-            //Call finishing function
-            //return
+        if (pokemon.isSelected) {
+            setGameStatus('lose')//End game
+            return
+        }
         //toggle selected
+        const updatedPokemon = { ...pokemon, isSelected: true };
+        const updatedCards = cards.map(card => 
+            card.id === pokemon.id ? updatedPokemon : card
+        );
+        setCards(updatedCards);
+        setPokeList(prevPokeList => 
+            prevPokeList.map(poke => 
+                poke.id === pokemon.id ? updatedPokemon : poke
+            )
+        );
         //Update score
-        
+        updateScore();
+        //Check wincon
+        checkWinCon();
+
+
     };
 
 
@@ -42,6 +59,8 @@ export const CardZone: React.FC<CardZoneProps> = ({updateScore, setGameStatus, p
                 <Card
                 key={pokemon.id}
                 pokemon={pokemon}
+                onClick={handleClick}
+                gameStatus={gameStatus}
                 ></Card>
             ))}
         </div>

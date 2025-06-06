@@ -14,7 +14,8 @@ export default function Board() {
     const [score, setScore] = useState<number>(0);
     const [record, setRecord] = useState<number>(0);
     const [gameStatus, setGameStatus] = useState< 'lose' | 'win' | 'ongoing'>('ongoing'); 
-    const [pokeList, setPokeList] = useState< Pokemon[] | null >(null);
+    const [pokeList, setPokeList] = useState< Pokemon[]>([]);
+    const [resetCount, setResetCount] = useState<number>(0)
 
 
     //Capitalize first letter of pokemon's name
@@ -49,7 +50,17 @@ export default function Board() {
             setPokeList(filteredList);
         };
         fetchPokemon();
-    }, [])
+    }, [resetCount])
+
+    function checkWinCon() {
+        //check if all pokemons have been selected
+        if (pokeList && pokeList.length > 0) {
+            const allSelected = pokeList.every(pokemon => pokemon.isSelected);
+            if (allSelected) {
+                setGameStatus('win');
+            }
+        }
+    }
 
     function updateScore() {
         if (gameStatus !== 'ongoing') {
@@ -67,15 +78,31 @@ export default function Board() {
         }
     }
 
+    function restart() {
+        setScore(0);
+        setGameStatus('ongoing');
+        setResetCount(count => count + 1)
+    }
+
+
 
 
     return (
         <div className="board">
-            <h1 className='title'></h1>
-            <Scoreboard
-            score={score}
-            record={record}
-            ></Scoreboard>
+            <h1 className='title'>Memory Card Game</h1>
+            {gameStatus === 'ongoing' ? (
+                <Scoreboard
+                score={score}
+                record={record}
+                ></Scoreboard>
+            ) : (
+                <div className="end-game">
+                    <h2>You {gameStatus}!</h2>
+                    <button
+                    onClick={restart}
+                    >Restart</button>
+                </div>
+            )}
             {pokeList && pokeList.length > 0 
             ? (
                 <CardZone
@@ -83,6 +110,8 @@ export default function Board() {
                 setGameStatus={setGameStatus}
                 pokeList={pokeList}
                 setPokeList={setPokeList}
+                checkWinCon={checkWinCon}
+                gameStatus={gameStatus}
                 ></CardZone>)
             : (<p>No list generated</p>)
             }
