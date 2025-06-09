@@ -9,7 +9,8 @@ type CardProps = {
 export const Card: React.FC<CardProps> = ({ pokemon, onClick, gameStatus }) => {
     const cardClass = `card ${gameStatus === 'win' ? 'card-win' : ''} ${gameStatus === 'lose' ? 'card-lose' : ''}`
 
-    function handleClick() {
+    function handleClick(e) {
+        e.preventDefault()
         if (gameStatus !== 'ongoing') {
             return;
         }

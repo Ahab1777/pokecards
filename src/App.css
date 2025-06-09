@@ -2,6 +2,7 @@
   box-sizing: border-box;
 }
 
+
 /* create color variables for yellow blue and red */
 :root {
   --yellow: #FFCB05;
@@ -11,8 +12,14 @@
   --white: #ffffff;
 }
 
+#root {
+  display: flex;
+  justify-content: center;
+}
+
 html {
   background: linear-gradient(45deg, var(--red) 45%, var(--blue) 55%);
+  height: 100%;
 }
 
 /* Fonts */
@@ -33,7 +40,6 @@ html {
   justify-content: center;
   align-items: center;
   margin: 3rem 1rem;
-  max-width: 750px;
 }
 
 .board > h1{
@@ -55,17 +61,20 @@ html {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  max-width: 80vw;
+  align-items: center;
+  width: 920px;
+  height: 450px;
   gap: 0.5rem;
   padding: 2rem;
 }
 
 .card{
   max-width: 200px;
-  flex: 1 1 auto;
+  height: 180px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   border: 3px solid black;
   border-radius: 5px;
   padding: 1rem 0;
@@ -75,9 +84,9 @@ html {
 
 .card img {
   max-width: 150px;
-  min-width: 120px;
   max-height: 130px;
   width: 100%;
+  height: 100%;
   aspect-ratio: 1 / 1;
   object-fit: contain;
   transition: opacity 0.3s ease;
@@ -126,4 +135,48 @@ html {
     }
 }
 
+/* Desktop */
+@media (min-width: 900px) {
 
+}
+
+
+/* Tablet */
+@media (min-width: 500px) and (max-width: 899px) {
+  .card-zone{
+    width: 450px;
+    height: 450px;
+    padding: 2px;
+  }
+
+  .card{
+    height: 150px;
+    width: 100px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 499px) {
+  .board > h1 {
+    font-size: 25px;
+  }
+
+  .board{
+    margin: 1rem;
+  }
+
+  .card-zone{
+    width: 100vw;
+    height: 100%;
+    padding: 2px;
+  }
+
+  .card{
+    height: 130px;
+    width: 100px;
+  }
+
+  .card > h3{
+    font-size: 0.8rem;
+  }
+}

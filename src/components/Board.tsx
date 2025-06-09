@@ -52,22 +52,12 @@ export default function Board() {
         fetchPokemon();
     }, [resetCount])
 
-    function checkWinCon() {
-        //check if all pokemons have been selected
-        if (pokeList && pokeList.length > 0) {
-            const allSelected = pokeList.every(pokemon => pokemon.isSelected);
-            if (allSelected) {
-                setGameStatus('win');
-            }
-        }
-    }
-
-    function updateScore() {
+    function updateScore(currentList: Pokemon[]) {
         if (gameStatus !== 'ongoing') {
             return
         }
-        let currentScore: number = 0;
-        pokeList?.forEach(pokemon => {//Check number of selected pokemons so far
+        let currentScore: number = 1;
+        currentList.forEach(pokemon => {//Check number of selected pokemons so far
             if (pokemon.isSelected) {
                 currentScore++
             }
@@ -83,8 +73,6 @@ export default function Board() {
         setGameStatus('ongoing');
         setResetCount(count => count + 1)
     }
-
-
 
 
     return (
@@ -110,7 +98,6 @@ export default function Board() {
                 setGameStatus={setGameStatus}
                 pokeList={pokeList}
                 setPokeList={setPokeList}
-                checkWinCon={checkWinCon}
                 gameStatus={gameStatus}
                 ></CardZone>)
             : (<p>No list generated</p>)

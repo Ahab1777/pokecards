@@ -3,28 +3,39 @@ import { Card } from "./Card"
 import { useState, useEffect } from "react"
 
 type CardZoneProps = {
-    updateScore: () => void
+    updateScore: (currentPokemonList: Pokemon[]) => void
     setGameStatus: (status: 'ongoing' | 'win' | 'lose') => void
     pokeList: Pokemon[]
     setPokeList: React.Dispatch<React.SetStateAction<Pokemon[]>>
-    checkWinCon: () => void
     gameStatus: 'ongoing' | 'win' | 'lose'
 }
 
-export const CardZone: React.FC<CardZoneProps> = ({updateScore, gameStatus, setGameStatus, pokeList, setPokeList, checkWinCon}) => {
+export const CardZone: React.FC<CardZoneProps> = ({updateScore, gameStatus, setGameStatus, pokeList}) => {
     const [cards, setCards] = useState<Pokemon[]>([]);
 
-    // Shuffle only when pokeList changes
     useEffect(() => {
-        if (pokeList.length > 0) {
-            const shuffled = [...pokeList];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        setCards([...pokeList]);
+    }, [pokeList])
+
+    useEffect(() => {
+        //Verify wincon - check if all pokemon have been selected
+        if (cards && cards.length > 0) {
+            const allSelected = cards.every(pokemon => pokemon.isSelected);
+            if (allSelected) {
+                setGameStatus('win');
             }
-            setCards(shuffled);
         }
-    }, [pokeList]);    
+    }, [cards, setGameStatus])
+
+    function shuffle(array: Pokemon[]) {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
 
     //Handle card click
     const handleClick = (pokemon: Pokemon) => {
@@ -38,16 +49,12 @@ export const CardZone: React.FC<CardZoneProps> = ({updateScore, gameStatus, setG
         const updatedCards = cards.map(card => 
             card.id === pokemon.id ? updatedPokemon : card
         );
-        setCards(updatedCards);
-        setPokeList(prevPokeList => 
-            prevPokeList.map(poke => 
-                poke.id === pokemon.id ? updatedPokemon : poke
-            )
-        );
+        setCards(shuffle(updatedCards));
+
         //Update score
-        updateScore();
+        updateScore(cards);
         //Check wincon
-        checkWinCon();
+        
 
 
     };
