@@ -53,9 +53,6 @@ export const CardZone: React.FC<CardZoneProps> = ({updateScore, gameStatus, setG
 
         //Update score
         updateScore(cards);
-        //Check wincon
-        
-
 
     };
 

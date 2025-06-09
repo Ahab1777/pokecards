@@ -102,6 +102,16 @@ export default function Board() {
                 ></CardZone>)
             : (<p>No list generated</p>)
             }
+            <footer className="game-footer">
+                <p>
+                Created by <strong>Leonardo de Pinho</strong> for <a href="https://www.theodinproject.com" target="_blank" rel="noopener noreferrer">The Odin Project</a>
+                </p>
+                <p className="github-link">
+                <a href="https://github.com/Ahab1777/pokecards" target="_blank" rel="noopener noreferrer">
+                    View on GitHub
+                </a>
+                </p>
+            </footer>
         </div>
     )
 }
